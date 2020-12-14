@@ -1,0 +1,29 @@
+{
+  "name": "flexmg",
+  "version": "1.0.0",
+  "description": "time tracking and task tracking for flexmg",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgtianzon/flexmg.git"
+  },
+  "author": "rtianzon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rgtianzon/flexmg/issues"
+  },
+  "homepage": "https://github.com/rgtianzon/flexmg#readme",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "ejs-mate": "^3.0.0",
+    "express": "^4.17.1",
+    "express-router": "0.0.1",
+    "express-session": "^1.17.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.11.7",
+    "nodemon": "^2.0.6"
+  }
+}
