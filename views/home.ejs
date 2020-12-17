@@ -3,9 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <title>Signalyzer 4 FlexMG</title>
+    <style>
+        /*login */
+#bodylogin {
+    background: linear-gradient(to right,#36d1dc,#5b86e5);
+     text-align: center;
+     color: white;
+     font-family: Poppins;
+     padding: 100px;
+ }
+ div {
+     padding: 5px;
+ }
+ #btnlogin{
+     width: 80%;
+     border: transparent;
+     margin: 10px;
+     padding: 10px 20px 10px 20px;
+     border-radius: 5px;
+     font-weight: 500;
+ }
+ #fuser{
+     width: 80%;
+     padding: 10px 20px 10px 20px;
+     border-radius: 5px;
+     border-style: hidden;
+     color:black;
+ }
+ #fpass{
+     width: 80%;
+     padding: 10px 20px 10px 20px;
+     border-radius: 5px;
+     border-style: hidden;
+     color:black;
+ }
+ .login-box {
+     /*background: #2f6e5f91;*/
+     width: 380px;
+     height: 420px;
+     border-radius: 10px;
+     background: rgb(2, 132, 155);
+     color: #fff;
+     top: 45%;
+     left: 50%;
+     position: absolute;
+     transform: translate(-50%,-50%);
+     box-sizing: border-box;
+     padding: 50px 50px;
+ /* monitor */    
+ }
+.item {
+    width: 100px;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: middle
+}
+#welcome {
+    color: white;
+}
+
+.item {
+    width: auto;
+}
+.table-danger, .table-danger>td, .table-danger>th {
+    background-color: transparent;
+    border: 2px solid white;
+}
+ /* pwreset */  
+#passbox {
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    background:  rgb(2, 132, 155);
+    color: #fff;
+    top: 45%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 50px;
+}
+ /* home */
+body {
+    background: linear-gradient(to right,#36d1dc,#5b86e5);
+    font-family: Poppins;
+    text-align: center;
+    color: white;
+    }
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 2px solid white;
+}
+.container {
+    padding: 10px;
+    margin-top: 20px;
+    background-color: transparent;
+    width: 100%;
+    border-radius: 10px;
+}
+.navbar {
+    margin-bottom: 0px;
+}
+.btn-outline-info {
+    color: white;
+    border: 2px solid white;
+    font-weight: bold;
+}
+#npdf {
+    margin-bottom: 10px;
+   /* border: 2px solid white;*/
+    padding: 30px;
+    border-radius: 20px;
+    background:  rgb(2, 132, 155);
+}
+
+#pdf {
+    margin-bottom: 10px;
+   /* border: 2px solid white;*/
+    padding: 30px;
+    border-radius: 20px;
+    background:  rgb(2, 132, 155);
+}
+#btnstart{
+    width: 60%;
+    border-style: solid;
+    margin: 10px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+#lgo {
+    margin-bottom: 0;
+}
+
+.col-md-4 {
+    text-align: center;
+}
+.table-info, .table-info>td, .table-info>th {
+    background-color: transparent;
+    border: 2px solid white;
+}
+#oghead {
+background: rgb(2, 132, 155);
+}
+#exampleModalLabel{
+    color: darkslategrey;
+}
+/* roster */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: white;
+}
+.hid {
+    display: none;
+}
+/* manage task */
+#adetails {
+    color: #8cff9d;
+}
+
+
+    </style>
 </head>
-<body>
-    <h1>This is the home page</h1>
+<body id="bodylogin">
+    <div class="login-box">
+ <!--       <div class="row">
+            <div class="col-md-4 col-sm-4"></div>
+            <div class="col-md-4 col-sm-4">-->
+                <h1>SIGN IN</h1>
+                <p>Welcome to Signalyzer for FlexMG</p>
+                <form action="/login" method="POST">
+                    <div>
+                        <Input name="userName" type="text" placeholder="USERNAME" id="fuser"></Input>
+                    </div>
+                    <div>
+                        <Input name="password" type="password" placeholder="PASSWORD" id="fpass"></Input>
+                    </div>
+                    <button class="btn btn-success" id="btnlogin">SIGN IN NOW</button>
+                </form>
+            <!--</div>
+            <div class="col-md-4 col-sm-4"></div>
+        </div>-->
+    </div>
 </body>
 </html>
