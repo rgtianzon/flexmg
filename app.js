@@ -10,7 +10,12 @@ const moment = require('moment');
 const m = moment();
 const momenttz = require('moment-timezone');
 const flash = require('connect-flash');
+const Slackbot = require('slackbots');
 
+const bot = new Slackbot({
+    token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
+    name: 'FlexMG - Update'
+})
 
 const Roster = require('./models/roster');
 const State = require('./models/stateFlexMG');
@@ -232,6 +237,7 @@ app.put('/oncamp', async (req, res) => {
         const durationTime = hours + 'h ' + minutes + 'm ' + seconds + 's'
         
         // duration end
+        
         const rstime = `${new Date(aTask.startDate).getHours()}:${new Date(aTask.startDate).getMinutes()}:${new Date(aTask.startDate).getSeconds()}`;
         const retime = `${new Date(endDate).getHours()}:${new Date(endDate).getMinutes()}:${new Date(endDate).getSeconds()}`;
         const filter = { workID: tid };
@@ -255,6 +261,16 @@ app.put('/oncamp', async (req, res) => {
             UpdatedBy: user.userName
         };
         await AgentCamp.findOneAndUpdate(filter, update);
+        const reports = `${aTask.fullName} | ${rstime} - ${retime} | FlexMG: Leads Prospected -${leadsProspected} | Good leads -${goodLeads} | Website -${website} | Email -${email} | Linkedin -${linkedin} | FB -${fb} | Skype -${Skype}`;
+        console.log(reports)
+
+        const bot = new Slackbot({
+            token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
+            name: 'FlexMG - Update'
+        })
+        bot.on('start', ()=>{
+            bot.postMessageToChannel('flexmg-test', reports);
+        })
         res.redirect('/agenthome')
 })
 
