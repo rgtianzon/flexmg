@@ -309,8 +309,6 @@ app.post('/addcamps', async (req, res) => {
     })
     await newCamp.save()
     res.redirect('/agenthome')
-    // console.log('add campaign post route')
-    // console.log(CampName)
 })
 
 
