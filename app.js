@@ -12,10 +12,10 @@ const momenttz = require('moment-timezone');
 const flash = require('connect-flash');
 const Slackbot = require('slackbots');
 
-const bot = new Slackbot({
-    token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
-    name: 'FlexMG - Update'
-})
+// const bot = new Slackbot({
+//     token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
+//     name: 'FlexMG - Update'
+// })
 
 const Roster = require('./models/roster');
 const State = require('./models/stateFlexMG');
@@ -264,13 +264,13 @@ app.put('/oncamp', async (req, res) => {
         const reports = `${aTask.fullName} | ${rstime} - ${retime} | FlexMG: Leads Prospected -${leadsProspected} | Good leads -${goodLeads} | Website -${website} | Email -${email} | Linkedin -${linkedin} | FB -${fb} | Skype -${Skype}`;
         console.log(reports)
 
-        const bot = new Slackbot({
-            token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
-            name: 'FlexMG - Update'
-        })
-        bot.on('start', ()=>{
-            bot.postMessageToChannel('flexmg-test', reports);
-        })
+        // const bot = new Slackbot({
+        //     token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
+        //     name: 'FlexMG - Update'
+        // })
+        // bot.on('start', ()=>{
+        //     bot.postMessageToChannel('flexmg-test', reports);
+        // })
         res.redirect('/agenthome')
 })
 
