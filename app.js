@@ -123,7 +123,6 @@ app.get('/agenthome', async (req, res) => {
     }
 })
 
-
 //agent adding state
 app.post('/onstate', async (req, res) => {
     const user = await Roster.findOne({userName: req.session.user_id});
@@ -327,7 +326,10 @@ app.post('/addcamps', async (req, res) => {
     res.redirect('/agenthome')
 })
 
-
+// app.get('/eod', async (req, res) => {
+//     const user = await Roster.findOne({userName: req.session.user_id});
+//     res.render('agenteod', { user })
+// })
 
 
 // admin routes
@@ -396,6 +398,12 @@ app.post('/rostermanagement', async (req, res) => {
 app.post('/logout', (req, res) => {
     req.session.user_id = null;
     res.redirect('/');
+})
+
+
+app.get('/api', async (req, res) => {
+    const campWorks = await AgentCamp.find({}).sort({created_at: -1});
+    res.send(campWorks)
 })
 
 const port = process.env.PORT || 8080;
