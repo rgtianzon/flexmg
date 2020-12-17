@@ -26,7 +26,7 @@
         }
         .container {
             padding: 10px;
-            margin-top: 20px;
+            margin-top: 80px;
             background-color: transparent;
             width: 100%;
             border-radius: 10px;
@@ -108,13 +108,38 @@
         #campModal {
             color: darkslategrey;
         }
+        #statecampaign {
+            margin-bottom: 10px;
+           /* border: 2px solid white;*/
+            padding: 20px;
+            border-radius: 20px;
+            background:  rgb(2, 132, 155);
+        }
+        h3{
+            font-weight: bold;
+        }
+        .footer{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color:#343a40;
+            color: white;
+            float:left;
+            text-align: left;
+            font-size: 12px;
+            padding: 10px;
+        }
+        p{
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <!-- navbar start -->
     <div class="pos-f-t">
         <!--new nav start-->
-        <nav class="navbar navbar-light bg-dark">
+        <nav class="navbar navbar-light fixed-top bg-dark">
           <div class="container-fluid">
             <div class="navbar-header">
               <a class="navbar-brand" href="/agenthome" id="welcome">Welcome, <%= user.firstName %>!</a>
@@ -137,9 +162,9 @@
     <div class="container">
         <!-- Select sTate form -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" id="statecampaign">
                 <form action="/onstate" method="POST">
-                <h4>Please Select State</h4>
+                <h3>Please Select State</h3>
                 <div class="form-group">
                     <select name="stateName" id="stateName" class="form-control">
                     <option value="">Select State</option>
@@ -166,7 +191,7 @@
                     </div>
                 </form>
 
-                <button class="btn btn-info" data-toggle="modal" data-target="#addCamp">Add Campaign</button>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#addCamp">Add Campaign</button>
 
                 <!-- modal for adding Campaign to work on -->
                 <div class="modal fade" id="addCamp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -250,7 +275,7 @@
                 <!-- ongoing Campaign work -->
                 <h3>Campaign Work:</h3>
                 <table class="table">
-                    <thead>
+                    <thead id="oghead">
                         <tr class="table-danger">
                             <th scope="col">Work ID</th>
                             <th scope="col">Campaign Name</th>
@@ -326,7 +351,7 @@
             <div class="col-md-6">
                 <h5>Status History</h5>
                 <table class="table">
-                    <thead>
+                    <thead id="oghead">
                         <tr class="table-info">
                             <th scope="col">StateID</th>
                             <th scope="col">State Name</th>
@@ -351,7 +376,7 @@
             <div class="col-md-6">
                 <h5>Campaign History</h5>
                 <table class="table">
-                    <thead>
+                    <thead id="oghead">
                         <tr class="table-info">
                             <th scope="col">WorkID</th>
                             <th scope="col">Campaign Name</th>
@@ -376,7 +401,13 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> <br>
+              <!--Footer Start-->
+              <div class="footer" style="margin-bottom:0">
+                <p>Signalyzer v2.0™ | Created by Rupert Tianzon & Ralph Lawrence Villamor</p>
+            </div>
+            <!--Footer End-->
+    
     <script>
         // ongoing state timer
         function convertTZ(date, tzString) {
