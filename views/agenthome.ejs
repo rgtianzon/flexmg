@@ -294,10 +294,10 @@
                                 <td><%= oc.CampName %></td>
                                 <td class="campstart"><%= oc.startDate %></td>
                                 <td class="camptime"></td>
-                                <td><button class="btn btn-warning" data-toggle="modal" data-target="#<%= oc.CampU %><%= oc.workID %>">END</button></td>
+                                <td><button class="btn btn-warning" data-toggle="modal" data-target="#<%= oc.userName %><%= oc.workID %>">END</button></td>
                             </tr>
                             <!-- modal for ongoing campaign work -->
-                            <div class="modal fade" id="<%= oc.CampU %><%= oc.workID %>" tabindex="-1" role="dialog" aria-labelledby="campModal" aria-hidden="true">
+                            <div class="modal fade" id="<%= oc.userName %><%= oc.workID %>" tabindex="-1" role="dialog" aria-labelledby="campModal" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                   <div class="modal-content">
                                     <div class="modal-header">
