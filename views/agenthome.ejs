@@ -169,10 +169,10 @@
         <!-- Select sTate form -->
         <div class="row">
             <div class="col-md-4" id="statecampaign">
-                <form action="/onstate" method="POST">
+                <form action="/onstate" method="POST" novalidate class="validated-form">
                 <h3>Please Select State</h3>
                 <div class="form-group">
-                    <select name="stateName" id="stateName" class="form-control">
+                    <select name="stateName" id="stateName" class="form-control" required>
                     <option value="">Select State</option>
                     <% for (let st of state) { %>
                         <option value="<%= st.stateName %>"><%= st.stateName %></option>
@@ -183,9 +183,9 @@
                     <button class="btn btn-success" id="btnstart">START</button>
                 </div>
                 </form>
-                <form action="/oncamp" method="POST">
+                <form action="/oncamp" method="POST" novalidate class="validated-form">
                     <div class="form-group">
-                        <select name="CampName" id="CampName" class="form-control">
+                        <select name="CampName" id="CampName" class="form-control" required>
                             <option value="">Select Campaign</option>
                             <% for (let ca of Camp){ %>
                                 <option value="<%= ca.CampName %>"><%= ca.CampName %></option>
@@ -210,9 +210,9 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/addcamps" method="POST">
+                            <form action="/addcamps" method="POST" novalidate class="validated-form">
                                 <div class="form-group">
-                                    <input  name="CampName" type="text" class="form-control" placeholder="Campain Name"></input>
+                                    <input  name="CampName" type="text" class="form-control" placeholder="Campain Name" required></input>
                                 </div>
                                 <div class="form-group">
                                     <textarea name="details" class="form-control" placeholder="Please enter Campaign Details"></textarea>
@@ -432,6 +432,26 @@
             <!--Footer End-->
     
     <script>
+
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.validated-form')
+
+            // Loop over them and prevent submission
+            Array.from(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
         // ongoing state timer
         function convertTZ(date, tzString) {
             return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
