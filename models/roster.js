@@ -10,6 +10,8 @@ const rosterSchema = new mongoose.Schema({
     Title: String,
     userName: String,
     password: String,
+    email: String,
+    emailPassword: String,
     isActive: String,
     isAdmin: String,
     isSuperAdmin: String

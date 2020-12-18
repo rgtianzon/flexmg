@@ -299,8 +299,6 @@ app.put('/agentpwreset', async (req, res) => {
         req.flash('error','Confirm Password did not match')
         res.render('agentpwreset', {user, err: req.flash('error'), msg: req.flash()});
     }
-    console.log(user)
-    console.log(req.body)
 })
 
 // add campaign
@@ -401,6 +399,31 @@ app.post('/logout', (req, res) => {
 })
 
 
+// adding email
+app.get('/addemail', async (req, res) => {
+    const user = await Roster.findOne({userName: req.session.user_id});
+    if(user.isActive && user.Account == "FlexMG"){
+        res.render('agentaddemail')
+    } else {
+        res.redirect('/');
+    }
+})
+
+// adding email put route
+app.put('/addemail', async (req, res) => {
+    const user = await Roster.findOne({userName: req.session.user_id});
+    const {email, emailPassword} = req.body;
+    const hash = await bcrypt.hash(emailPassword, 12);
+    const filter = {userName: user.userName}
+    const update = {
+        email,
+        emailPassword: hash
+    }
+    await Roster.findOneAndUpdate(filter, update);
+    res.redirect('/');
+})
+
+//api route
 app.get('/api', async (req, res) => {
     const campWorks = await AgentCamp.find({}).sort({created_at: -1});
     res.send(campWorks)
