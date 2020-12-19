@@ -151,7 +151,6 @@ app.post('/onstate', async (req, res) => {
         .then(() => {
             res.redirect('/');
         })
-    console.log(agentState)
 })
 
 // agent put route for end state
@@ -305,29 +304,35 @@ app.put('/agentpwreset', async (req, res) => {
 app.post('/addcamps', async (req, res) => {
     const { CampName, details} = req.body
     const user = await Roster.findOne({userName: req.session.user_id});
-    const campaign = await Campaign.find({});
-    let random = Math.floor(Math.random()*99999999) + 100001
-    const campid = await Campaign.findOne({CampID: random});
-    while(campid !== null){
-        random = Math.floor(Math.random()*99999999) + 100001
+    const campaign = await Campaign.find({CampName});
+    if(campaign !==null ){
+        res.redirect('/agenthome')
+    } else {
+        let random = Math.floor(Math.random()*99999999) + 100001
+        const campid = await Campaign.findOne({CampID: random});
+        while(campid !== null){
+            random = Math.floor(Math.random()*99999999) + 100001
+        }
+        const fi = req.body.CampName.replace(/\s/g, '');
+        CampU = fi + random;
+        const newCamp = new Campaign({
+            CampID: random,
+            CampU: CampU,
+            CampName,
+            details,
+            addedBy: user.userName
+        })
+        await newCamp.save()
+        res.redirect('/agenthome')
     }
-    const fi = req.body.CampName.replace(/\s/g, '');
-    CampU = fi + random;
-    const newCamp = new Campaign({
-        CampID: random,
-        CampU: CampU,
-        CampName,
-        details,
-        addedBy: user.userName
-    })
-    await newCamp.save()
-    res.redirect('/agenthome')
 })
 
-// app.get('/eod', async (req, res) => {
-//     const user = await Roster.findOne({userName: req.session.user_id});
-//     res.render('agenteod', { user })
-// })
+
+//agent EOD
+app.get('/eod', async (req, res) => {
+    const user = await Roster.findOne({userName: req.session.user_id});
+    res.render('agenteod', { user })
+})
 
 
 // admin routes
