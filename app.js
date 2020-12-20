@@ -106,7 +106,7 @@ app.post('/login', async (req, res) => {
 app.get('/agenthome', async (req, res) => {
     const user = await Roster.findOne({userName: req.session.user_id});
     const state = await State.find({});
-    const Camp = await Campaign.find({});
+    const Camp = await Campaign.find({}).sort({created_at: -1});
     const ongoingState = await AgentState.find({userName: req.session.user_id, onGoing: true}).sort({created_at: -1});
     const onCamp = await AgentCamp.find({userName: req.session.user_id, onGoing: true}).sort({created_at: -1});
     // state history
@@ -430,7 +430,7 @@ app.put('/addemail', async (req, res) => {
 
 //api route
 app.get('/api', async (req, res) => {
-    const campWorks = await AgentCamp.find({}).sort({created_at: -1});
+    const campWorks = await AgentCamp.find({}).sort({fullName: -1});
     res.send(campWorks)
 })
 
