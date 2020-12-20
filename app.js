@@ -186,7 +186,6 @@ app.put('/agentstateput', async (req, res) => {
     };
     await AgentState.findOneAndUpdate(filter, update);
     res.redirect('/agenthome');
-    console.log(req.body)
 })
 
 //agent working on campaign
@@ -260,7 +259,6 @@ app.put('/oncamp', async (req, res) => {
         };
         await AgentCamp.findOneAndUpdate(filter, update);
         const reports = `${aTask.fullName} | ${rstime} - ${retime} | FlexMG: Leads Prospected -${leadsProspected} | Good leads -${goodLeads} | Website -${website} | Email -${email} | Linkedin -${linkedin} | FB -${fb} | Skype -${Skype}`;
-        console.log(reports)
 
         // const bot = new Slackbot({
         //     token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
@@ -294,7 +292,6 @@ app.put('/agentpwreset', async (req, res) => {
         req.flash('success','Password Changed')
         res.render('agentpwreset', {user, msg: req.flash('success'), err: req.flash()});
     } else if (pw!==cpw) {
-        console.log(false)
         req.flash('error','Confirm Password did not match')
         res.render('agentpwreset', {user, err: req.flash('error'), msg: req.flash()});
     }
@@ -431,6 +428,11 @@ app.put('/addemail', async (req, res) => {
 //api route
 app.get('/api', async (req, res) => {
     const campWorks = await AgentCamp.find({}).sort({fullName: -1});
+    res.send(campWorks)
+})
+
+app.get('/campeod/api', async (req, res) =>{
+    const campWorks = await AgentCamp.find({}).sort({CampName: -1});
     res.send(campWorks)
 })
 
