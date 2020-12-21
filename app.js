@@ -11,6 +11,8 @@ const m = moment();
 const momenttz = require('moment-timezone');
 const flash = require('connect-flash');
 const Slackbot = require('slackbots');
+const nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars');
 
 // const bot = new Slackbot({
 //     token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
@@ -23,6 +25,7 @@ const AgentState = require('./models/agentState');
 const Campaign = require('./models/campFlexMG');
 const AgentCamp = require('./models/agentWorkingCamp');
 const FlexEOD = require('./models/flexmgeod');
+const { getMaxListeners } = require("./models/roster");
 
 const sessionOptions = { 
     secret: 'notagoodsecret', 
@@ -329,13 +332,21 @@ app.post('/addcamps', async (req, res) => {
 //agent EOD
 app.get('/eod', async (req, res) => {
     const user = await Roster.findOne({userName: req.session.user_id});
-    res.render('agenteod', { user })
+    res.render('agenteod', {user, msg: req.flash(), err: req.flash()});
 })
 
 app.post('/eodpost', async (req, res) => {
     const user = await Roster.findOne({userName: req.session.user_id});
     const { remarks, challenges, actionItems, updates } = req.body
+    let NewYork = momenttz.tz(new Date(), "America/New_York");
+    let random = Math.floor(Math.random()*99999999) + 100001
+    const flexEODid = await FlexEOD.findOne({eodID: random});
+    while(flexEODid !== null){
+        random = Math.floor(Math.random()*99999999) + 100001
+    }
     const eodpost = new FlexEOD({
+        eodID: random,
+        eodDate: NewYork,
         userName: user.userName,
         remarks,
         challenges,
@@ -343,7 +354,6 @@ app.post('/eodpost', async (req, res) => {
         updates
     })
     await eodpost.save()
-    console.log(eodpost)
     res.redirect('/eod')
 })
 
@@ -440,7 +450,48 @@ app.put('/addemail', async (req, res) => {
     res.redirect('/');
 })
 
-//api route
+//send email EOD
+app.post('/sendeod', async (req, res) => {
+    const user = await Roster.findOne({userName: req.session.user_id});
+    const { pw } = req.body;
+    let transporter = nodemailer.createTransport({
+        host:'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: user.email,
+            pass: pw
+        },
+        tls: {
+            rejectUnauthorized:false
+        }
+    })
+    transporter.use('compile', hbs({
+        viewEngine: 'express-handlebars',
+        viewPath: './views/'
+    }));
+
+    let MailOptions = {
+        from: `"${user.firstName} ${user.lastName}" <${user.email}>`,
+        to: 'rtregrogan@gmail.com',
+        subject: 'Outbound Sales/Special Projects <> FlexMG | EOD 12/18/2020',
+        text: '',
+        template: 'eodemailtemplate'
+    }
+
+    transporter.sendMail(MailOptions, (error, info) => {
+        if (error) {
+            console.log(error)
+            // req.flash('error','Please make user password is correct')
+            // res.render('agenteod', {user, err: req.flash('error'), msg: req.flash()});
+        }
+        console.log(info)
+        // req.flash('success','EOD SENT!')
+        // res.render('agenteod', {user, msg: req.flash('success'), err: req.flash()});
+    })
+})
+
+//api routes
 app.get('/api', async (req, res) => {
     const campWorks = await AgentCamp.find({}).sort({fullName: -1});
     res.send(campWorks)

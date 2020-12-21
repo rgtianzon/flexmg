@@ -136,6 +136,13 @@
         #wcrh {
             color: darkslategrey;
         }
+        .eodtxt {
+            border: 2px solid white;
+            border-radius: 20px;
+        }
+        .eodbtn {
+            margin: 20px;
+        }
     </style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -209,7 +216,25 @@
 					</tr>
 				</table>
 			</div>
-		</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 eodtxt">
+                <h5>Remarks</h5>
+                <p id="rmk"></p>
+            </div>
+            <div class="col-md-3 eodtxt">
+                <h5>Challenges</h5>
+                <p id="chs"></p>
+            </div>
+            <div class="col-md-3 eodtxt">
+                <h5>Action Items</h5>
+                <p id="ati"></p>
+            </div>
+            <div class="col-md-3 eodtxt">
+                <h5>Updates</h5>
+                <p id="upd"></p>
+            </div>
+        </div>
 	</div>
 <script>
 
@@ -362,7 +387,6 @@
 			// overall table
 			const cpeod = [];
 
-
 			let camptbl = document.querySelector('#camps')
 
 			for(i=0;i<doneCamp.length;i++){
@@ -370,6 +394,7 @@
 					cpeod.push(doneCamp[i])
 				}
 			}
+
 			let campnames = []
 			for(i=0;i<cpeod.length;i++){
 				if (i===0){
@@ -439,6 +464,33 @@
 			}
 		})
 
+		fetch('https://flexmg.herokuapp.com/allcampeod/api')
+			.then((res)=>{
+				return res.json()
+			})
+			.then((data)=>{
+
+				function convertTZ(date, tzString) {
+    				return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));
+				}
+				let nytime = convertTZ(new Date(), "America/New_York")
+				const allcampeod = [];
+
+				for(i=0;i<data.length;i++){
+					if (`${convertTZ(new Date(data[i].eodDate), "America/New_York").getFullYear()}-${convertTZ(new Date(data[i].eodDate), "America/New_York").getMonth()+1}-${convertTZ(new Date(data[i].eodDate), "America/New_York").getDate()}` === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
+						allcampeod.push(data[i])
+					}
+				}
+				let remarks = allcampeod[0].remarks
+				let challenges = allcampeod[0].challenges
+				let actionItems = allcampeod[0].actionItems
+				let updates = allcampeod[0].updates
+
+				document.querySelector('#rmk').innerText = remarks
+				document.querySelector('#chs').innerText = challenges
+				document.querySelector('#ati').innerText = actionItems
+				document.querySelector('#upd').innerText = updates
+			})
 </script>
 
 </body>

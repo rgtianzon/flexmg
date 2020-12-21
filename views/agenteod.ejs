@@ -143,6 +143,9 @@
         .eodbtn {
             margin: 20px;
         }
+        #useremail {
+            color: darkslategrey;
+        }
     </style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -173,6 +176,16 @@
     </div>
     <!--new nav end-->
 	<div class="container">
+        <% if (msg && msg.length) { %>
+            <div class="alert alert-success" role="alert">
+                <%= msg %>
+            </div>
+        <% } %>
+        <% if (err && err.length) { %>
+            <div class="alert alert-danger" role="alert">
+                <strong>ERROR: </strong><%= err %>
+            </div>
+        <% } %>
 		<h4>End of Day Report</h4>
 		<h4>Outbound Sales Team - Special Projects</h4>
 		<div class="row">
@@ -245,29 +258,29 @@
         <div class="row">
             <div class="col-md-3 eodtxt">
                 <h5>Remarks</h5>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                <p id="rmk"></p>
             </div>
             <div class="col-md-3 eodtxt">
                 <h5>Challenges</h5>
-                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+                <p id="chs"></p>
             </div>
             <div class="col-md-3 eodtxt">
                 <h5>Action Items</h5>
-                <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+                <p id="ati"></p>
             </div>
             <div class="col-md-3 eodtxt">
                 <h5>Updates</h5>
-                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text.</p>
+                <p id="upd"></p>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col align-self-center">
                 <button class="btn btn-warning eodbtn" data-toggle="modal" data-target="#editeodmodal">EDIT</button>
-                <button class="btn btn-success eodbtn">SEND</button>
+                <button class="btn btn-success eodbtn" data-toggle="modal" data-target="#sendemail" hidden>SEND</button>
             </div>
         </div>
-
+        <!-- modal for edit eod -->
         <div class="modal fade" id="editeodmodal" tabindex="-1" role="dialog" aria-labelledby="campModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -293,6 +306,31 @@
                         </div>
                         <div>
                             <button class="btn btn-warning">DONE</button>
+                        </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- modal for sending email -->
+        <div class="modal fade" id="sendemail" tabindex="-1" role="dialog" aria-labelledby="campModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="campModal">SEND EOD</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="/sendeod" method="POST">
+                        <h5 id="useremail">Your Email: <%= user.email %></h5>
+                        <div class="form-group">
+                            <input type="password" name="pw" class="form-control" placeholder="Email Password" required></input>
+                        </div>
+                        <div>
+                            <button class="btn btn-success">SEND</button>
                         </div>
                   </form>
                 </div>
@@ -526,8 +564,35 @@
 				sktd.innerText = sumSkype
 				tr.appendChild(sktd)
 			}
-		})
+        })
 
+        fetch('https://flexmg.herokuapp.com/allcampeod/api')
+			.then((res)=>{
+				return res.json()
+			})
+			.then((data)=>{
+
+				function convertTZ(date, tzString) {
+    				return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));
+				}
+				let nytime = convertTZ(new Date(), "America/New_York")
+				const allcampeod = [];
+
+				for(i=0;i<data.length;i++){
+					if (`${convertTZ(new Date(data[i].eodDate), "America/New_York").getFullYear()}-${convertTZ(new Date(data[i].eodDate), "America/New_York").getMonth()+1}-${convertTZ(new Date(data[i].eodDate), "America/New_York").getDate()}` === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
+						allcampeod.push(data[i])
+					}
+				}
+				let remarks = allcampeod[0].remarks
+				let challenges = allcampeod[0].challenges
+				let actionItems = allcampeod[0].actionItems
+				let updates = allcampeod[0].updates
+
+				document.querySelector('#rmk').innerText = remarks
+				document.querySelector('#chs').innerText = challenges
+				document.querySelector('#ati').innerText = actionItems
+				document.querySelector('#upd').innerText = updates
+			})
 </script>
 
 </body>

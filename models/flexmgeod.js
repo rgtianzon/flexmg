@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const flexmgeod = new mongoose.Schema({
     eodID: Number,
+    eodDate: String,
     userName: String,
     remarks: String,
     challenges: String,
