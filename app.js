@@ -22,6 +22,7 @@ const State = require('./models/stateFlexMG');
 const AgentState = require('./models/agentState');
 const Campaign = require('./models/campFlexMG');
 const AgentCamp = require('./models/agentWorkingCamp');
+const FlexEOD = require('./models/flexmgeod');
 
 const sessionOptions = { 
     secret: 'notagoodsecret', 
@@ -331,6 +332,20 @@ app.get('/eod', async (req, res) => {
     res.render('agenteod', { user })
 })
 
+app.post('/eodpost', async (req, res) => {
+    const user = await Roster.findOne({userName: req.session.user_id});
+    const { remarks, challenges, actionItems, updates } = req.body
+    const eodpost = new FlexEOD({
+        userName: user.userName,
+        remarks,
+        challenges,
+        actionItems,
+        updates
+    })
+    await eodpost.save()
+    console.log(eodpost)
+    res.redirect('/eod')
+})
 
 // admin routes
 // adding State/Status
@@ -434,6 +449,11 @@ app.get('/api', async (req, res) => {
 app.get('/campeod/api', async (req, res) =>{
     const campWorks = await AgentCamp.find({}).sort({CampName: -1});
     res.send(campWorks)
+})
+
+app.get('/allcampeod/api', async(req, res) => {
+    const alleod = await FlexEOD.find({}).sort({created_at: -1});
+    res.send(alleod)
 })
 
 const port = process.env.PORT || 8080;

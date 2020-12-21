@@ -136,42 +136,10 @@
         #wcrh {
             color: darkslategrey;
         }
-        .eodtxt {
-            border: 2px solid white;
-            border-radius: 20px;
-        }
-        .eodbtn {
-            margin: 20px;
-        }
     </style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <!-- navbar start -->
-    <div class="pos-f-t">
-        <nav class="navbar navbar-light fixed-top bg-dark">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="/agenthome" id="welcome">Welcome, <%= user.firstName %>!</a>
-            </div>
-            <ul class="nav justify-content-end">
-                <li class="nav-item">
-                  <a class="text-white" href="/agenthome">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="text-white" href="/eod">EOD</a>
-                </li>
-                <li class="nav-item">
-                  <a class="text-white" href="/agentpwreset">Reset Password</a>
-                </li>
-                <form action="/logout" method="POST" id="lgo">
-                  <button class="btn btn-danger btn-sm"><strong>Logout</strong></button>
-                </form>
-            </ul>
-          </div>
-        </nav>
-    </div>
-    <!--new nav end-->
 	<div class="container">
 		<h4>End of Day Report</h4>
 		<h4>Outbound Sales Team - Special Projects</h4>
@@ -241,64 +209,7 @@
 					</tr>
 				</table>
 			</div>
-        </div>
-        <div class="row">
-            <div class="col-md-3 eodtxt">
-                <h5>Remarks</h5>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            </div>
-            <div class="col-md-3 eodtxt">
-                <h5>Challenges</h5>
-                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-            </div>
-            <div class="col-md-3 eodtxt">
-                <h5>Action Items</h5>
-                <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
-            </div>
-            <div class="col-md-3 eodtxt">
-                <h5>Updates</h5>
-                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text.</p>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col align-self-center">
-                <button class="btn btn-warning eodbtn" data-toggle="modal" data-target="#editeodmodal">EDIT</button>
-                <button class="btn btn-success eodbtn">SEND</button>
-            </div>
-        </div>
-
-        <div class="modal fade" id="editeodmodal" tabindex="-1" role="dialog" aria-labelledby="campModal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="campModal">EDIT EOD</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form action="/eodpost" method="POST">
-                        <div class="form-group">
-                            <textarea name="remarks" class="form-control" placeholder="Enter Remarks" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <textarea name="challenges" class="form-control" placeholder="Enter Challenges" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <textarea name="actionItems" class="form-control" placeholder="Enter Action Items" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <textarea name="updates" class="form-control" placeholder="Enter Updates" required></textarea>
-                        </div>
-                        <div>
-                            <button class="btn btn-warning">DONE</button>
-                        </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-        </div>
+		</div>
 	</div>
 <script>
 
