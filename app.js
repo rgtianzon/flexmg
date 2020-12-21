@@ -25,7 +25,6 @@ const AgentState = require('./models/agentState');
 const Campaign = require('./models/campFlexMG');
 const AgentCamp = require('./models/agentWorkingCamp');
 const FlexEOD = require('./models/flexmgeod');
-const { getMaxListeners } = require("./models/roster");
 
 const sessionOptions = { 
     secret: 'notagoodsecret', 
@@ -303,11 +302,14 @@ app.put('/agentpwreset', async (req, res) => {
 
 // add campaign
 app.post('/addcamps', async (req, res) => {
+    console.log(req.body)
     const { CampName, details} = req.body
     const user = await Roster.findOne({userName: req.session.user_id});
     const campaign = await Campaign.find({CampName});
-    if(campaign !==null ){
+    console.log(campaign)
+    if(!campaign){
         res.redirect('/agenthome')
+        console.log('fail')
     } else {
         let random = Math.floor(Math.random()*99999999) + 100001
         const campid = await Campaign.findOne({CampID: random});
