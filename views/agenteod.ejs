@@ -293,16 +293,16 @@
                 <div class="modal-body">
                   <form action="/eodpost" method="POST">
                         <div class="form-group">
-                            <textarea name="remarks" class="form-control" placeholder="Enter Remarks" required></textarea>
+                            <textarea name="remarks" class="form-control" placeholder="Enter Remarks" id="remk" required></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea name="challenges" class="form-control" placeholder="Enter Challenges" required></textarea>
+                            <textarea name="challenges" class="form-control" placeholder="Enter Challenges" id="chlg" required></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea name="actionItems" class="form-control" placeholder="Enter Action Items" required></textarea>
+                            <textarea name="actionItems" class="form-control" placeholder="Enter Action Items" id="actm" required></textarea>
                         </div>
                         <div class="form-group">
-                            <textarea name="updates" class="form-control" placeholder="Enter Updates" required></textarea>
+                            <textarea name="updates" class="form-control" placeholder="Enter Updates" id="updt" required></textarea>
                         </div>
                         <div>
                             <button class="btn btn-warning">DONE</button>
@@ -588,6 +588,11 @@
                     document.querySelector('#chs').innerText = challenges
                     document.querySelector('#ati').innerText = actionItems
                     document.querySelector('#upd').innerText = updates
+
+                    document.querySelector('#remk').innerText = remarks
+                    document.querySelector('#chlg').innerText = challenges
+                    document.querySelector('#actm').innerText = actionItems
+                    document.querySelector('#updt').innerText = updates
                 })
     </script>
 

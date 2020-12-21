@@ -334,7 +334,8 @@ app.post('/addcamps', async (req, res) => {
 //agent EOD
 app.get('/eod', async (req, res) => {
     const user = await Roster.findOne({userName: req.session.user_id});
-    res.render('agenteod', {user, msg: req.flash(), err: req.flash()});
+    const alleod = await FlexEOD.find({}).sort({created_at: -1});
+    res.render('agenteod', {user, msg: req.flash(), err: req.flash(), alleod});
 })
 
 app.post('/eodpost', async (req, res) => {
