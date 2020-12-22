@@ -12,7 +12,7 @@ const momenttz = require('moment-timezone');
 const flash = require('connect-flash');
 const Slackbot = require('slackbots');
 const nodemailer = require('nodemailer');
-const hbs = require('nodemailer-express-handlebars');
+const Email = require('email-templates');
 
 // const bot = new Slackbot({
 //     token: 'xoxb-1534814714324-1567192858695-a2vs4BX0aHobeUrDuNbUEcZH',
@@ -453,14 +453,16 @@ app.put('/addemail', async (req, res) => {
     res.redirect('/');
 })
 
+app.get('/flexmgeod', (req, res) =>{
+    res.render('eodemailtemplate')
+})
+
 //send email EOD
 app.post('/sendeod', async (req, res) => {
     const user = await Roster.findOne({userName: req.session.user_id});
     const { pw } = req.body;
     let transporter = nodemailer.createTransport({
-        host:'smtp.gmail.com',
-        port: 587,
-        secure: false,
+        service: 'gmail',
         auth: {
             user: user.email,
             pass: pw
@@ -469,29 +471,64 @@ app.post('/sendeod', async (req, res) => {
             rejectUnauthorized:false
         }
     })
-    transporter.use('compile', hbs({
-        viewEngine: 'express-handlebars',
-        viewPath: './views/'
-    }));
 
-    let MailOptions = {
-        from: `"${user.firstName} ${user.lastName}" <${user.email}>`,
-        to: 'rtregrogan@gmail.com',
-        subject: 'Outbound Sales/Special Projects <> FlexMG | EOD 12/18/2020',
-        text: '',
-        template: 'eodemailtemplate'
-    }
+    const email = new Email({
+        views: {options: {extension: 'ejs'}},
+        message: {from: `"${user.firstName} ${user.lastName}" <${user.email}>`},
+        preview: false,
+        send: true,
+        transport: transporter
+    });
 
-    transporter.sendMail(MailOptions, (error, info) => {
-        if (error) {
-            console.log(error)
-            // req.flash('error','Please make user password is correct')
-            // res.render('agenteod', {user, err: req.flash('error'), msg: req.flash()});
-        }
-        console.log(info)
-        // req.flash('success','EOD SENT!')
-        // res.render('agenteod', {user, msg: req.flash('success'), err: req.flash()});
+    email.render({
+        path: 'views/eodemailtemplate',
+        juiceResources: {
+            preserveImportant: true,
+            webResources: {
+              // view folder path, it will get css from `mars/style.css`
+              relativeTo: path.resolve('mars')
+            }
+          },
+        name: 'Elon'
     })
+
+    email.send({
+        template: 'views',
+        message: {
+            to: 'rtregrogan@gmail.com',
+            subject: 'Outbound Sales/Special Projects <> FlexMG | EOD 12/18/2020'
+        },
+        locals:{
+            name: 'Elon'
+        }
+    })
+    .then(()=>{
+        res.redirect('/eod')
+    })
+    .catch(()=>{
+        res.send('Error sending email please go back ang making sure your password is correct')
+    })
+
+    // email.render('views/eodemailtemplate', {name: 'FlesMG'})
+    //     .then(console.log)
+    //     .catch(console.error)
+
+    // let MailOptions = {
+    //     to: 'rtregrogan@gmail.com',
+    //     subject: 'Outbound Sales/Special Projects <> FlexMG | EOD 12/18/2020',
+    //     text: '',
+    // }
+
+    // transporter.sendMail(MailOptions, (error, info) => {
+    //     if (error) {
+    //         console.log(error)
+    //         // req.flash('error','Please make user password is correct')
+    //         // res.render('agenteod', {user, err: req.flash('error'), msg: req.flash()});
+    //     }
+    //     console.log(info)
+    //     // req.flash('success','EOD SENT!')
+    //     // res.render('agenteod', {user, msg: req.flash('success'), err: req.flash()});
+    // })
 })
 
 //api routes
