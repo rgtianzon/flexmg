@@ -547,6 +547,11 @@ app.get('/allcampeod/api', async(req, res) => {
     res.send(alleod)
 })
 
+app.get('/agentstate/api', async(req, res) => {
+    const allagentste = await AgentState.find({}).sort({created_at: -1});
+    res.send(allagentste)
+})
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`port is at ${port}`);
