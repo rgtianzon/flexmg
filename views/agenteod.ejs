@@ -353,7 +353,7 @@
                 let doneCamp = data.filter((camp)=>{
                     return camp.onGoing == false
                 })
-    
+    			// console.log(doneCamp)
                 function convertTZ(date, tzString) {
                     return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));
                 }
@@ -362,12 +362,16 @@
                 // overall table
                 const dceod = [];
                 for(i=0;i<doneCamp.length;i++){
-                    if (new Date(doneCamp[i].created_at).toISOString().replace(/T/, ' ').split(' ')[0] === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
+                    if (`${new Date(doneCamp[i].created_at).getFullYear()}-${new Date(doneCamp[i].created_at).getMonth()+1}-${new Date(doneCamp[i].created_at).getDate()}` === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
                         dceod.push(doneCamp[i])
                     }
+                    // console.log(`${new Date(doneCamp[i].created_at).getFullYear()}-${new Date(doneCamp[i].created_at).getMonth()+1}-${new Date(doneCamp[i].created_at).getDate()}`)
+                    // console.log(`${nytime.getMonth()+1}`)
+                    // console.log(`${nytime.getDate()}`)
+                    // console.log(`${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`)
                 }
     
-                // console.log(dceod)
+                console.log(dceod)
                 let eodarray = [];
                 let eoddate = [];
     
@@ -391,7 +395,7 @@
                        eodarray[index].Skype += this.Skype;
                        }
                 });
-    
+
                 document.querySelector('#date').innerText = `Date: ${eodarray[eodarray.length-1].Date}`;
     
                 document.querySelector('#pl').innerText = `${eodarray[eodarray.length-1].leadsProspected}`;

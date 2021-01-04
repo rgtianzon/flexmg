@@ -457,80 +457,6 @@ app.get('/flexmgeod', (req, res) =>{
     res.render('eodemailtemplate')
 })
 
-//send email EOD
-app.post('/sendeod', async (req, res) => {
-    const user = await Roster.findOne({userName: req.session.user_id});
-    const { pw } = req.body;
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: user.email,
-            pass: pw
-        },
-        tls: {
-            rejectUnauthorized:false
-        }
-    })
-
-    const email = new Email({
-        views: {options: {extension: 'ejs'}},
-        message: {from: `"${user.firstName} ${user.lastName}" <${user.email}>`},
-        preview: false,
-        send: true,
-        transport: transporter
-    });
-
-    email.render({
-        path: 'views/eodemailtemplate',
-        juiceResources: {
-            preserveImportant: true,
-            webResources: {
-              // view folder path, it will get css from `mars/style.css`
-              relativeTo: path.resolve('mars')
-            }
-          },
-        name: 'Elon'
-    })
-
-    email.send({
-        template: 'views',
-        message: {
-            to: 'rtregrogan@gmail.com',
-            subject: 'Outbound Sales/Special Projects <> FlexMG | EOD 12/18/2020'
-        },
-        locals:{
-            name: 'Elon'
-        }
-    })
-    .then(()=>{
-        res.redirect('/eod')
-    })
-    .catch(()=>{
-        res.send('Error sending email please go back ang making sure your password is correct')
-    })
-
-    // email.render('views/eodemailtemplate', {name: 'FlesMG'})
-    //     .then(console.log)
-    //     .catch(console.error)
-
-    // let MailOptions = {
-    //     to: 'rtregrogan@gmail.com',
-    //     subject: 'Outbound Sales/Special Projects <> FlexMG | EOD 12/18/2020',
-    //     text: '',
-    // }
-
-    // transporter.sendMail(MailOptions, (error, info) => {
-    //     if (error) {
-    //         console.log(error)
-    //         // req.flash('error','Please make user password is correct')
-    //         // res.render('agenteod', {user, err: req.flash('error'), msg: req.flash()});
-    //     }
-    //     console.log(info)
-    //     // req.flash('success','EOD SENT!')
-    //     // res.render('agenteod', {user, msg: req.flash('success'), err: req.flash()});
-    // })
-})
-
 //api routes
 app.get('/api', async (req, res) => {
     const campWorks = await AgentCamp.find({}).sort({fullName: -1});
@@ -540,6 +466,7 @@ app.get('/api', async (req, res) => {
 app.get('/campeod/api', async (req, res) =>{
     const campWorks = await AgentCamp.find({}).sort({CampName: -1});
     res.send(campWorks)
+    console.log(campWorks)
 })
 
 app.get('/allcampeod/api', async(req, res) => {
