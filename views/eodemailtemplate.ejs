@@ -255,7 +255,7 @@
 			// overall table
 			const dceod = [];
 			for(i=0;i<doneCamp.length;i++){
-				if (new Date(doneCamp[i].created_at).toISOString().replace(/T/, ' ').split(' ')[0] === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
+				if (`${new Date(doneCamp[i].created_at).getFullYear()}-${new Date(doneCamp[i].created_at).getMonth()+1}-${new Date(doneCamp[i].created_at).getDate()}` === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
 					dceod.push(doneCamp[i])
 				}
 			}
@@ -390,7 +390,7 @@
 			let camptbl = document.querySelector('#camps')
 
 			for(i=0;i<doneCamp.length;i++){
-				if (new Date(doneCamp[i].created_at).toISOString().replace(/T/, ' ').split(' ')[0] === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
+				if (`${new Date(doneCamp[i].created_at).getFullYear()}-${new Date(doneCamp[i].created_at).getMonth()+1}-${new Date(doneCamp[i].created_at).getDate()}` === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
 					cpeod.push(doneCamp[i])
 				}
 			}
