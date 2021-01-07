@@ -143,16 +143,23 @@
         .eodbtn {
             margin: 20px;
         }
+        #date {
+        	text-align: center;
+        }
     </style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<div class="container">
+		<div>
+			<p>Date</p>
+			<input type="date" id="date" onchange="getdate()"></input>
+		</div>
 		<h4>End of Day Report</h4>
 		<h4>Outbound Sales Team - Special Projects</h4>
 		<div class="row">
 			<div class="col-md-4"></div>
-			<div class="col-md-4" id="date"></div>
+			<!-- <div class="col-md-4" id="date"></div> -->
 			<div class="col-md-4"></div>
 		</div>
 		<hr>
@@ -238,7 +245,21 @@
 	</div>
 <script>
 
-	fetch('https://flexmg.herokuapp.com/api')
+	selDate = "";
+	function getdate(){
+		let date = document.querySelector('#date').value
+		const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+		function convertTZ(date, tzString) {
+    		return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));
+		}
+
+		let esttime = convertTZ(new Date(date), "Asia/Manila")
+		selectedDate = `${new Date(esttime).getFullYear()}-${new Date(esttime).getMonth()+1}-${new Date(esttime).getDate()}`
+		selDate = selectedDate
+		// console.log(selectedDate)
+		// console.log(selDate)
+
+			fetch('https://flexmg.herokuapp.com/api')
 		.then((res)=>{
 			return res.json()
 		})
@@ -252,14 +273,17 @@
 			}
 
 			let nytime = convertTZ(new Date(), "America/New_York")
+			// console.log(nytime)
 			// overall table
 			const dceod = [];
 			for(i=0;i<doneCamp.length;i++){
-				if (`${new Date(doneCamp[i].created_at).getFullYear()}-${new Date(doneCamp[i].created_at).getMonth()+1}-${new Date(doneCamp[i].created_at).getDate()}` === `${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`) {
+				if (`${new Date(doneCamp[i].created_at).getFullYear()}-${new Date(doneCamp[i].created_at).getMonth()+1}-${new Date(doneCamp[i].created_at).getDate()}` == selDate) {
 					dceod.push(doneCamp[i])
 				}
+				console.log(`${new Date(doneCamp[i].created_at).getFullYear()}-${new Date(doneCamp[i].created_at).getMonth()+1}-${new Date(doneCamp[i].created_at).getDate()}`)
+				// console.log(`${nytime.getFullYear()}-${nytime.getMonth()+1}-${nytime.getDate()}`)
 			}
-
+			// console.log(nytime)
 			// console.log(dceod)
 			let eodarray = [];
 			let eoddate = [];
@@ -491,6 +515,8 @@
 				document.querySelector('#ati').innerText = actionItems
 				document.querySelector('#upd').innerText = updates
 			})
+
+	}
 </script>
 
 </body>
